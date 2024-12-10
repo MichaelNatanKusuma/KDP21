@@ -1,0 +1,106 @@
+﻿@model PagedList.IPagedList<LinqToSQLMvcApplication.Models.PublisherModel>
+
+@using PagedList.Mvc
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<h2>Publishers</h2>
+
+<!-- Search Form -->
+@using (Html.BeginForm("Index", "Publisher", FormMethod.Get, new { id = "searchForm" }))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<!-- Sort Links -->
+<div class="sort-links">
+    <a href="@Url.Action("Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, page = 1 })" class="sort-link">Sort by Name</a> |
+    <a href="@Url.Action("Index", new { sortOrder = ViewBag.YearSortParm, currentFilter = ViewBag.CurrentFilter, page = 1 })" class="sort-link">Sort by Year</a>
+</div>
+
+<!-- Publisher Table -->
+<div id="publisherList">
+    @Html.Partial("_PublisherList", Model)
+</div>
+
+<!-- Pagination Links -->
+<div id="paginationLinks">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
+<style>
+    .pagination-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .pagination {
+        display: inline-flex;
+        justify-content: center;
+        list-style-type: none;
+        padding-left: 0;
+        margin: 0;
+    }
+
+        .pagination a, .pagination span {
+            padding: 5px 10px;
+            margin: 0 5px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .pagination a {
+            color: #007bff;
+        }
+
+            .pagination a:hover {
+                background-color: #ddd;
+            }
+
+        .pagination .current {
+            font-weight: bold;
+            background-color: #007bff;
+            color: white;
+        }
+
+        .pagination .disabled {
+            color: #ccc;
+            pointer-events: none;
+        }
+
+        .pagination .dots {
+            display: none !important;
+        }
+</style>
+
+<script>
+    // Handle pagination, sorting, and search with AJAX
+    $(document).on("click", ".pagination a, .sort-link", function (e) {
+        e.preventDefault();  //-- Prevent default link click behavior
+        var url = $(this).attr("href");  //-- Get the URL from the clicked link
+        loadPage(url);  //-- Load the page with the URL using AJAX
+    });
+
+    $('#searchForm').submit(function (e) {
+        e.preventDefault();  //-- Prevent default form submission
+        var url = $(this).attr('action') + '?' + $(this).serialize();  //-- Serialize form data and add it to the URL
+        loadPage(url);  //-- Load the page with AJAX
+    });
+
+    //-- Function to load page content dynamically
+    function loadPage(url) {
+        $.ajax({
+            url: url,  //-- Send the AJAX request to the specified URL
+            type: "GET",  //-- Use the GET method for retrieving data
+            success: function (data) {
+                // Update publisher list and pagination links dynamically
+                $('#publisherList').html($(data).find('#publisherList').html());
+                $('#paginationLinks').html($(data).find('#paginationLinks').html());
+            }
+        });
+    }
+</script>
