@@ -1,0 +1,12 @@
+//Liat di output console di visual studio
+var response = await client.SendEmailAsync(myMessage);
+Console.WriteLine($"StatusCode: {response.StatusCode}");
+Console.WriteLine($"ResponseBody: {await response.Body.ReadAsStringAsync()}");
+
+//Use TempData or ViewBag
+TempData["ErrorMessage"] = "An error occurred: " + ex.Message; -> Di backend
+@if (TempData["ErrorMessage"] != null) -> Di view
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
