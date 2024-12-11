@@ -1,0 +1,19 @@
+For Debugging in JS
+$('#publisherListTable').DataTable({
+    "ajax": {
+        "url": "/Home/GetData",
+        "type": "GET",
+        "datatype": "json",
+        "error": function (xhr, error, thrown) {
+            console.error("Error in DataTables AJAX: ", error);
+        }
+    },
+    "columns": [
+        { "data": "Name" },
+        { "data": "Position" },
+        { "data": "Office" },
+        { "data": "Age" },
+        { "data": "StartDate" },
+        { "data": "Salary" }
+    ]
+});
