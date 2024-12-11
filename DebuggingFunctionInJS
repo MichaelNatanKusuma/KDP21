@@ -17,3 +17,50 @@ $('#publisherListTable').DataTable({
         { "data": "Salary" }
     ]
 });
+
+Select certain column only
+--Anonymous type
+ var query = from publisher in context.Publishers
+            select new
+            {
+                publisher.Name,
+                publisher.Location // Replace with the desired column names
+            };
+
+var publishers = query.ToList();
+--DTO type
+public class PublisherDto
+{
+    public string Name { get; set; }
+    public string Location { get; set; }
+}
+var query = from publisher in context.Publishers
+            select new PublisherDto
+            {
+                Name = publisher.Name,
+                Location = publisher.Location // Replace with the desired column names
+            };
+
+var publishers = query.ToList();
+
+--Using Method Syntax
+var publishers = context.Publishers
+    .Select(p => new
+    {
+        p.Name,
+        p.Location // Replace with the desired column names
+    })
+    .ToList();
+
+var publishers = context.Publishers
+    .Select(p => new PublisherDto
+    {
+        Name = p.Name,
+        Location = p.Location // Replace with the desired column names
+    })
+    .ToList();
+
+
+
+
+
