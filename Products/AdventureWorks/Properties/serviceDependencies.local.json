@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "identityapp1": {
-      "connectionInfo": "App registration: KDP 2024 Batch 21, Tenant: PT. Kairos Utama Indonesia (kairoscloud.onmicrosoft.com - Microsoft Entra ID)",
-      "type": "identityapp.default"
-    }
-  }
-}
