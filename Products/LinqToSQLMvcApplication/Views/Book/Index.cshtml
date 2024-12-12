@@ -1,0 +1,103 @@
+﻿@*@model IEnumerable<LinqToSQLMvcApplication.Models.BookModel>*@
+@model PagedList.IPagedList<LinqToSQLMvcApplication.Models.BookModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>List of Books</h2>
+
+    @*@Html.ActionLink("+Create New", "Create")*@
+@*@Html.ActionLink("+Create New", "Create", "Product", new { area = "" }, new { @class = "btn btn-primary" })*@
+    @*@Html.ActionLink("Publishers", "Index", "Publisher")*@
+
+@using (Html.BeginForm("Index", "Book", FormMethod.Get))
+{
+    <p>
+        @*Maksudnya apa ini BeginForm di atas gua sama TextBox di bawah gua*@
+        Find by title or publisher: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Title", "Index", new
+            {
+                sortOrder = ViewBag.TitleSortParm,
+           currentFilter = ViewBag.CurrentFilter
+            })
+        </th>
+        @*<th>
+                Title
+            </th>*@
+        @*<th>
+                @Html.ActionLink("Year", "Index", new { sortOrder = ViewBag.YearSortParm })
+            </th>
+            <th></th>*@
+        @*<th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>*@
+        <th>
+            Author
+        </th>
+        <th>
+            @Html.ActionLink("Year", "Index", new
+            {
+                sortOrder = ViewBag.YearSortParm,
+           currentFilter = ViewBag.CurrentFilter
+            })
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Price)*@
+            Price
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.PublisherId)*@
+            PublisherId
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.PublisherName)*@
+            PublisherName
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Auther)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublisherId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublisherName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
