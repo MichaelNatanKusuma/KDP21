@@ -60,6 +60,24 @@ var publishers = context.Publishers
     })
     .ToList();
 
+//Custom Validation
+public class ProductLineValidator
+{
+    public static ValidationResult ValidateProductLine(string value, ValidationContext context)
+    {
+        if (value == "N" || value == "K")
+        {
+            return ValidationResult.Success;
+        }
+        return new ValidationResult("ProductLine must be either 'N' or 'K'.");
+    }
+}
+
+[CustomValidation(typeof(ProductLineValidator), nameof(ProductLineValidator.ValidateProductLine))]
+public string ProductLine { get; set; }
+
+[RegularExpression("^[NK]$", ErrorMessage = "ProductLine must be either 'N' or 'K'.")]
+
 
 
 
