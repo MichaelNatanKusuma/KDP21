@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -45,7 +46,15 @@ namespace AdventureWorks.Controllers
         // GET: Product/Create
         public ActionResult Create()
         {
-            return View();
+            ProductModel model = _repository.GetCategories();
+
+            return View(model);
+        }
+
+        public JsonResult GetProductSubcategories(int productCategoryId)
+        {
+            var productSubcategories = _repository.GetProductSubcategories(productCategoryId);
+            return Json(productSubcategories, JsonRequestBehavior.AllowGet);
         }
 
         // POST: Product/Create

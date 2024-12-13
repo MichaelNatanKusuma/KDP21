@@ -67,18 +67,9 @@ namespace AdventureWorks.Controllers
         // GET: ProductSubCategory/Create
         public ActionResult Create()
         {
-            var dropdownGenerator = new DropdownGenerator<ProductCategory>(
-               x => x.Name, // Selector for Text
-               x => x.ProductCategoryID.ToString() // Selector for Value
-           );
-
-            // Generate the SelectListItems
-            var categories = dropdownGenerator.PrepareSelectList(_dataContext.ProductCategories.AsQueryable());
-
-            ProductSubCategoryModel model = new ProductSubCategoryModel();
-            model.ProductCategories = categories;
+          
         
-            //ProductSubCategoryModel model = _repository.GetCategories();
+            ProductSubCategoryModel model = _repository.GetCategories();
             
             return View(model);
         }
@@ -113,8 +104,10 @@ namespace AdventureWorks.Controllers
             // Generate the SelectListItems
             var categories = dropdownGenerator.PrepareSelectList(_dataContext.ProductCategories.AsQueryable());
 
-          
+            //subCategory = _repository.GetCategories();
             subCategory.ProductCategories = categories;
+            
+            
             //subCategory.ProductCategories = _repository.GetCategories().ProductCategories;
             return View(subCategory);
         }

@@ -13,5 +13,7 @@ namespace AdventureWorks.Models.Infrastructure
         void InsertProduct(ProductModel Product);
         void deleteProduct(int ProductId);
         void UpdateProduct(ProductModel Product);
+        ProductModel GetCategories();
+        List<ProductSubCategoryModel> GetProductSubcategories(int productCategoryId);
     }
 }

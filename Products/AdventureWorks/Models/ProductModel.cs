@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Linq;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace AdventureWorks.Models
 {
@@ -17,11 +18,14 @@ namespace AdventureWorks.Models
         public int ProductID{get ; set ;}
         [Required(ErrorMessage = "Name is required")]
         public string Name{get ; set ;}
+        public int ProductCategoryID { get; set; }
         [Required(ErrorMessage = "ProductNumber is required")]
         public string ProductNumber{get ; set ;}
         [Required(ErrorMessage = "MakeFlag is required")]
         public bool MakeFlag{get ; set ;}
         [Required(ErrorMessage = "FinishedGoodsFlag is required")]
+        public IEnumerable<SelectListItem> ProductCategories { get; set; }
+        public IEnumerable<SelectListItem> ProductSubCategories { get; set; }
         public bool FinishedGoodsFlag{get ; set ;}
         public string Color{get ; set ;}
         [Required(ErrorMessage = "SafetyStockLevel is required")]

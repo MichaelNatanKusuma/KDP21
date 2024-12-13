@@ -4,8 +4,10 @@ using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
+using AdventureWorks.Helper;
 using AdventureWorks.Models.Infrastructure;
 
 namespace AdventureWorks.Models.Services
@@ -24,6 +26,30 @@ namespace AdventureWorks.Models.Services
         public ProductRepository()
         {
             _dataContext = new OperationDataContext(ConnectionStringSettings);
+        }
+
+        public ProductModel GetCategories()
+        {
+            var dropdownGenerator = new DropdownGenerator<ProductCategory>(
+               x => x.Name, // Selector for Text
+               x => x.ProductCategoryID.ToString() // Selector for Value
+           );
+
+            // Generate the SelectListItems
+            var categories = dropdownGenerator.PrepareSelectList(_dataContext.ProductCategories.AsQueryable());
+
+            ProductModel model = new ProductModel();
+            model.ProductCategories = categories;
+            return model;
+        }
+        public List<ProductSubCategoryModel> GetProductSubcategories(int productCategoryId)
+        {
+            var productSubcategories = _dataContext.ProductSubcategories
+                .Where(r => r.ProductCategoryID == productCategoryId)
+                .Select(r => new ProductSubCategoryModel { ProductSubcategoryID = r.ProductSubcategoryID, Name = r.Name })
+                .ToList();
+            return productSubcategories;
+           
         }
         public void deleteProduct(int ProductId)
         {

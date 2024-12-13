@@ -19,10 +19,12 @@ namespace AdventureWorks.Models
         public string Name {get ; set ;}
        
         public System.Guid rowguid {get ; set ;}
-        
+
+   
         public System.DateTime ModifiedDate {get ; set ;}
         
         public EntitySet<Product> Products { get ; set ;}
+
         
         public EntityRef<ProductCategory> ProductCategory {get ; set ;}
 
